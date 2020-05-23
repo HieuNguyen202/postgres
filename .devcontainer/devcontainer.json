@@ -27,6 +27,7 @@
     
 	"containerEnv": {
         "PGDATA": "/usr/local/pgsql/data",
-        "WS": "${containerWorkspaceFolder}"
+        "WS": "${containerWorkspaceFolder}",
+        "CFLAGS": "-O0"
 	}
 }
