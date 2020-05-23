@@ -12,24 +12,24 @@ ENV DEBIAN_FRONTEND=noninteractive
 # property in devcontainer.json to use it. On Linux, the container user's GID/UIDs
 # will be updated to match your local UID/GID (when using the dockerFile property).
 # See https://aka.ms/vscode-remote/containers/non-root-user for details.
-ARG USERNAME=vscode
-ARG USER_UID=1000
-ARG USER_GID=$USER_UID
+ARG USERNAME=postgres
 
 # Configure apt and install packages
 RUN apt-get update \
-    #
-    # Install C++ tools
-    && apt-get -y install build-essential cmake cppcheck valgrind \
+    && apt-get install -y apt-file \
+    && apt-file update
+
+# Install some tools
+RUN apt-get install -y vim
+
+# Install C++ tools
+RUN apt-get -y install build-essential cmake cppcheck valgrind \
     # Postgres specific packages
     bison flex libreadline7 libreadline-dev zlib1g-dev \
     #
-    # [Optional] Update UID/GID if needed
-    && if [ "$USER_GID" != "1000" ] || [ "$USER_UID" != "1000" ]; then \
-        groupmod --gid $USER_GID $USERNAME \
-        && usermod --uid $USER_UID --gid $USER_GID $USERNAME \
-        && chown -R $USER_UID:$USER_GID /home/$USERNAME; \
-    fi \
+    && useradd $USERNAME -m -d /home/$USERNAME \
+    && echo "alias dir='ls -la'" >> /home/$USERNAME/.bashrc \
+    && echo "export PATH=$PATH:/usr/local/pgsql/bin" >> /home/$USERNAME/.bashrc \
     #
     # [Optional] Add sudo support. Omit if you don't need to install software after connecting.
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
@@ -42,4 +42,3 @@ RUN apt-get update \
 
 # Switch back to dialog for any ad-hoc use of apt-get
 ENV DEBIAN_FRONTEND=dialog
-

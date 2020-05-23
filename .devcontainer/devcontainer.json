@@ -12,7 +12,8 @@
 
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
-		"ms-vscode.cpptools"
+        "ms-vscode.cpptools",
+        "rafoid.pg-utils"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
@@ -22,9 +23,11 @@
 	"postCreateCommand": ".devcontainer/postCreateCommand.sh",
 
 	// Uncomment to connect as a non-root user. See https://aka.ms/vscode-remote/containers/non-root.
-	"remoteUser": "vscode",
-
+    "remoteUser": "postgres",
+    
 	"containerEnv": {
-		"PGDATA": "/workspaces/data"
+        "PGDATA": "/usr/local/pgsql/data",
+        "WS": "${containerWorkspaceFolder}",
+        "CFLAGS": "-O0"
 	}
 }
