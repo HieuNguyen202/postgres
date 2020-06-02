@@ -1,5 +1,4 @@
 #!/bin/sh
-sudo chown vscode -R $(pwd)
 
 ./configure --enable-debug
 make
