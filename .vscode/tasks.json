@@ -59,7 +59,7 @@
         },
         {
             "label": "stop",
-            "command": "if [ -e ${env:PGDATA}/postmaster.pid ]; then pg_ctl stop; fi",
+            "command": "if [[ $(pg_ctl status) == *\"pg_ctl: server is running\"* ]]; then pg_ctl stop; fi",
             "detail": "Stop Postgres server"
         },
     ]
